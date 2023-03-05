@@ -1,0 +1,10 @@
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\bin\Debug\netstandard2.0\PokerHand.deps.json
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\bin\Debug\netstandard2.0\PokerHand.dll
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\bin\Debug\netstandard2.0\PokerHand.pdb
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\obj\Debug\netstandard2.0\PokerHand.csproj.AssemblyReference.cache
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\obj\Debug\netstandard2.0\PokerHand.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\obj\Debug\netstandard2.0\PokerHand.AssemblyInfoInputs.cache
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\obj\Debug\netstandard2.0\PokerHand.AssemblyInfo.cs
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\obj\Debug\netstandard2.0\PokerHand.csproj.CoreCompileInputs.cache
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\obj\Debug\netstandard2.0\PokerHand.dll
+C:\Users\boone\Desktop\Code\Brew\PokerHand\src\PokerHand\PokerHand\obj\Debug\netstandard2.0\PokerHand.pdb

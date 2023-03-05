@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "CToEdCL4KU0CGIEZoXygX+d1bfs4IojXcQS0Yu03bTDGNfBDmHlrEDwnux68aFj05RHqXhVNPew0fIhiQIKAvA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\boone\\Desktop\\Code\\Brew\\PokerHand\\src\\PokerHand\\PokerHand\\PokerHand.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\boone\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\boone\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
