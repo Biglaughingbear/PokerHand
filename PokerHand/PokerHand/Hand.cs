@@ -1,48 +1,171 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace PokerHand
 {
-    public static class Hand
-    {
-        public static int SettleHighCard(Player player1, Player player2)
+    public class Hand
+    {      
+
+        public bool HasPair(List<Card> hand)
         {
-            var handOne = player1.Hand.OrderBy(x => x.Value).ToList();
-            var handTwo = player2.Hand.OrderBy(x => x.Value).ToList();
+            return hand.GroupBy(x => x.NumericValue).Where(y => y.Count() == 2).Count() >= 1;
+        }
+        public bool HasTwoPair(List<Card> hand)
+        {
+            return hand.GroupBy(x => x.NumericValue).Where(y => y.Count() == 2).Count() >= 2;
+        }
+        public bool HasThreeOfAKind(List<Card> hand)
+        {
+            return hand.GroupBy(x => x.NumericValue).Where(y => y.Count() == 3).Count() >= 1;
+        }
+        public bool HasFourOfAKind(List<Card> hand)
+        {
+            return hand.GroupBy(x => x.NumericValue).Where(y => y.Count() == 4).Count() >= 1;
+        }
+        public bool HasFlush (List<Card> hand)
+        {
+            return hand.GroupBy(x => x.Suit).Count() == 1;  
+        }
+
+        public int SettleHighCard(Player player1, Player player2)
+        {
+            var handOne = player1.Hand.OrderBy(x => x.NumericValue).ToList();
+            var handTwo = player2.Hand.OrderBy(x => x.NumericValue).ToList();
 
             for (int i = 0; i < handOne.Count(); i++)
             {
-                if (handOne[i].Value > handTwo[i].Value)
+                if (handOne[i].NumericValue > handTwo[i].NumericValue)
                     return 1;
 
-                else if (handOne[i].Value > handTwo[i].Value)
+                else if (handOne[i].NumericValue < handTwo[i].NumericValue)
                     return 2;
             }
 
             return 0;
         }
 
-        public static bool HasPair(List<Card> hand)
+        public int SettlePair(Player player1, Player player2)
         {
-            return hand.GroupBy(x => x.Value).Where(y => y.Count() == 2).Count() >= 1;
+            var handOneValue = player1.Hand.GroupBy(x => x.NumericValue).FirstOrDefault(y => y.Count() == 2).Key;
+            var handTwoValue = player2.Hand.GroupBy(x => x.NumericValue).FirstOrDefault(y => y.Count() == 2).Key;
+
+            if (handOneValue > handTwoValue)
+                return 1;
+
+            else if (handOneValue < handTwoValue)
+                return 2;
+
+            return SettleHighCard(player1, player2);
         }
-        public static bool HasTwoPair(List<Card> hand)
+
+        public int SettleTwoPair(Player player1, Player player2)
         {
-            return hand.GroupBy(x => x.Value).Where(y => y.Count() == 2).Count() >= 2;
+            var handOnePairs = player1.Hand.GroupBy(x => x.NumericValue).Where(y => y.Count() == 2).ToList();
+            var handTwoPairs = player2.Hand.GroupBy(x => x.NumericValue).Where(y => y.Count() == 2).ToList();
+
+            for (int i = 0; i < handOnePairs.Count(); i++)
+            {
+                if (handOnePairs[i].Key > handTwoPairs[i].Key)
+                    return 1;
+
+                else if (handOnePairs[i].Key < handTwoPairs[i].Key)
+                    return 2;
+            }
+
+            return SettleHighCard(player1, player2);
         }
-        public static bool HasThreeOfAKind(List<Card> hand)
+
+        public int SettleThreeOfAKind(Player player1, Player player2)
         {
-            return hand.GroupBy(x => x.Value).Where(y => y.Count() == 3).Count() >= 1;
+            var handOneValue = player1.Hand.GroupBy(x => x.NumericValue).FirstOrDefault(y => y.Count() == 3).Key;
+            var handTwoValue = player2.Hand.GroupBy(x => x.NumericValue).FirstOrDefault(y => y.Count() == 3).Key;
+
+            if (handOneValue > handTwoValue)
+                return 1;
+
+            else if (handOneValue < handTwoValue)
+                return 2;
+
+            return SettleHighCard(player1, player2);
         }
-        public static bool HasFourOfAKind(List<Card> hand)
+
+        public int SettleFourOfAKind(Player player1, Player player2)
         {
-            return hand.GroupBy(x => x.Value).Where(y => y.Count() == 4).Count() >= 1;
+            var handOneValue = player1.Hand.GroupBy(x => x.NumericValue).FirstOrDefault(y => y.Count() == 4).Key;
+            var handTwoValue = player2.Hand.GroupBy(x => x.NumericValue).FirstOrDefault(y => y.Count() == 4).Key;
+
+            if (handOneValue > handTwoValue)
+                return 1;
+
+            else if (handOneValue < handTwoValue)
+                return 2;
+
+            return SettleHighCard(player1, player2);
         }
-        public static bool HasFlush (List<Card> hand)
+
+        public List<Player> SettleHand(List<Player> players)
         {
-            return hand.GroupBy(x => x.Suit).Count() == 1;  
+            var winningPlayer = players.Where(x => HasFourOfAKind(x.Hand)).ToList();
+            
+            if (winningPlayer.Count() > 1)
+                winningPlayer = SettleHand(winningPlayer, SettleFourOfAKind);
+
+            else if (winningPlayer.Count() == 0)
+            {
+                winningPlayer = players.Where(x => HasFlush(x.Hand)).ToList();
+
+                if (winningPlayer.Count() > 1)
+                    winningPlayer = SettleHand(winningPlayer, SettleHighCard);
+
+                else if (winningPlayer.Count() == 0)
+                {
+                    winningPlayer = players.Where(x => HasThreeOfAKind(x.Hand)).ToList();
+
+                    if (winningPlayer.Count() > 1)
+                        winningPlayer = SettleHand(winningPlayer, SettleThreeOfAKind);
+
+                    else if (winningPlayer.Count() == 0)
+                    {
+                        winningPlayer = players.Where(x => HasTwoPair(x.Hand)).ToList();
+
+                        if (winningPlayer.Count() > 1)
+                            winningPlayer = SettleHand(winningPlayer, SettleTwoPair);
+
+                        else if (winningPlayer.Count() == 0)
+                        {
+                            winningPlayer = players.Where(x => HasPair(x.Hand)).ToList();
+
+                            if (winningPlayer.Count() > 1)
+                                winningPlayer = SettleHand(winningPlayer, SettlePair);
+
+                            else if (winningPlayer.Count() == 0)
+                                winningPlayer = SettleHand(players, SettleHighCard);
+                        }
+                    }
+                }
+            }
+
+            return winningPlayer;
+        }
+
+        private List<Player> SettleHand(List<Player> players, Func<Player, Player, int> comparison)
+        {
+            var result = new List<Player>();
+
+            for (int i = players.Count-1; i >= 1; i--)
+            {
+                var winner = comparison(players[i], players[i-1]);
+                if (winner == 0)
+                {
+                    result.Add(players[i]);
+                    result.Add(players[i-1]);
+                }
+                else
+                    result.Add(winner == 1 ? players[i] : players[i-1]);
+            }
+            
+            return result;
         }
     }
 }
